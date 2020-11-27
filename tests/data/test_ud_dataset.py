@@ -143,8 +143,8 @@ def test_uddataset_from_file(tmp_path, example_dataset, cls, func):
         f.write(example_dataset)
 
     if func:
-        ds = cls.from_file(file, word_vocab, tag_vocab, func)
+        ds = cls.from_file(file, word_vocab, tag_vocab, func, encoding="utf-8")
     else:
-        ds = cls.from_file(file, word_vocab, tag_vocab)
+        ds = cls.from_file(file, word_vocab, tag_vocab, encoding="utf-8")
 
     assert len(ds) == 2

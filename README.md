@@ -1,5 +1,7 @@
 # Feiertag
 
+![Build](https://github.com/erip/feiertag/workflows/build/badge.svg)
+
 Feiertag is an open-source neural sequence tagging toolkit built with PyTorch.
 
 ## Installation

@@ -1,0 +1,6 @@
+# @package _group_
+
+dataset:
+  _target_: feiertag.data.ud_dataset.UDUPOSDataset.from_file
+vocab:
+  _target_: feiertag.data.ud_dataset.CoNLLUVocabReader

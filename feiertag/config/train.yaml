@@ -1,0 +1,10 @@
+random_seed: 42
+
+trainer:
+  max_epochs: 10
+
+defaults:
+  - model: bilstm
+  - data: train
+  - embedding: glove.6B.50d
+  - data_format: conllu

@@ -1,0 +1,6 @@
+# @package _group_
+
+dataset:
+  _target_: feiertag.data.conll2003_dataset.CoNLL2003NERDataset.from_file
+vocab:
+  _target_: feiertag.data.conll2003_dataset.CoNLL2003VocabReader

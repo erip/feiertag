@@ -1,0 +1,9 @@
+# @package _group_
+
+train: ???
+valid: ???
+loader:
+  batch_size: 64
+  pin_memory: True
+  shuffle: true
+  num_workers: 4

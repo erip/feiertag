@@ -19,6 +19,7 @@ setup(
         "hydra-core",
         "torch",
         "pytorch_lightning",
+        "pytorch-crf",
     ],
     test_requires=[
         "pytest",

@@ -9,7 +9,7 @@ Feiertag is an open-source neural sequence tagging toolkit built with PyTorch.
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install feiertag.
 
 ```bash
-https://github.com/erip/feiertag
+git clone git@github.com:erip/feiertag.git
 cd feiertag
 pip install -e .
 ```

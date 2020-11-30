@@ -22,7 +22,7 @@ Feiertag supports a handful of baseline architectures and datasets with configur
 feiertag-train data.train="$DATA_DIR/train.txt" data.valid="$DATA_DIR/valid.txt" data_format=conll2003 trainer.max_epochs=25 embedding.path="$EMBEDDING_DIR/glove.6B.50d.txt" model=bilstm_crf data.loader.batch_size=128 embedding.freeze=false
 ```
 
-Model training is handled by [PyTorch-Lightning](https://pytorch-lightning.readthedocs.io/en/stable/) and kwargs passed to the `pytorch_lightning.Trainer` class can be provided by Hydra override syntax. For example, to emulate `pl.Trainer(gpus='0,1', deterministic)`, use the following syntax:
+Model training is handled by [PyTorch-Lightning](https://pytorch-lightning.readthedocs.io/en/stable/) and kwargs passed to the `pytorch_lightning.Trainer` class can be provided by Hydra override syntax. For example, to emulate `pl.Trainer(gpus='0,1', deterministic=True)`, use the following syntax:
 
 
 ```sh

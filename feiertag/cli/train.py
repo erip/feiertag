@@ -86,7 +86,6 @@ def main(cfg: DictConfig):
     model = hydra.utils.instantiate(cfg["model"], word_vocab, tag_vocab, embedding)
     print(model)
 
-    tb_logger = pl_loggers.TensorBoardLogger("logs/")
-    trainer = pl.Trainer(**cfg["trainer"], logger=tb_logger)
+    trainer = pl.Trainer(**cfg["trainer"])
 
     trainer.fit(model, train_loader, dev_loader)

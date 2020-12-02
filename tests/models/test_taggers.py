@@ -43,7 +43,7 @@ def train_loader(word_vocab, tag_vocab):
         l = torch.LongTensor([tag_vocab[e] for e in labels])
         tensor.append((s, l))
 
-    return DataLoader(tensor, num_workers=4)
+    return DataLoader(tensor, num_workers=0)
 
 
 @pytest.fixture
@@ -60,7 +60,7 @@ def valid_loader(word_vocab, tag_vocab):
         l = torch.LongTensor([tag_vocab[e] for e in labels])
         tensor.append((s, l))
 
-    return DataLoader(tensor, num_workers=4)
+    return DataLoader(tensor, num_workers=0)
 
 
 @pytest.mark.parametrize(

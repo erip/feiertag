@@ -29,6 +29,25 @@ Model training is handled by [PyTorch-Lightning](https://pytorch-lightning.readt
 feiertag-train ... +trainer.gpus="0,1" +trainer.deterministic=true
 ```
 
+## Managing Experiments
+
+By default, Hydra maintains an output directory structure to separate runs. Similarly, PyTorch-Lightning logs checkpoints, hyperparameters, and [Tensorboard](https://www.tensorflow.org/tensorboard/) logfiles with the following structure:
+
+```tree
+outputs
+└── 2020-12-02
+    └── 18-02-11
+        ├── lightning_logs
+        │   └── version_0
+        │       ├── checkpoints
+        │       │   └── epoch=1.ckpt
+        │       ├── events.out.tfevents.1606950132.erip.16601.0
+        │       └── hparams.yaml
+        └── train.log
+```
+
+To view the above experiment in tensorboard, issue `tensorboard --logdir outputs/2020-12-02/18-02-11/lightning_logs/version_0/`.
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 

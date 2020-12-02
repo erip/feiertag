@@ -5,6 +5,7 @@ from feiertag.data.ud_dataset import (
     UDUPOSDataset,
     CoNLLUExample,
     CoNLLUToken,
+    CoNLLUVocabReader,
 )
 from feiertag.data.vocab import Vocab
 
@@ -148,3 +149,23 @@ def test_uddataset_from_file(tmp_path, example_dataset, cls, func):
         ds = cls.from_file(file, word_vocab, tag_vocab, encoding="utf-8")
 
     assert len(ds) == 2
+
+
+def test_conllu_vocab_reader(tmp_path, example_dataset):
+    file = tmp_path / "tmp.txt"
+
+    with open(file, "w", encoding="utf-8") as f:
+        f.write(example_dataset)
+
+    word_vocab, tag_vocab = CoNLLUVocabReader().read_vocabs(file, encoding="utf-8")
+
+    words = []
+    pos_tags = []
+    for line in example_dataset.splitlines():
+        if line.strip() and not line.strip().startswith("#"):
+            parts = line.split()
+            words.append(parts[1])
+            pos_tags.append(parts[3])
+
+    assert all(word in word_vocab for word in words)
+    assert all(tag in tag_vocab for tag in pos_tags)

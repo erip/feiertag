@@ -69,8 +69,10 @@ class CoNLL2003Dataset(Dataset):
             return cls(
                 [
                     CoNLL2003Example.from_lines(
-                        [line.strip() for line in s.splitlines()]) for s in f.read().strip().split("\n\n") if
-                    s.strip() != "-DOCSTART- -X- -X- O"
+                        [line.strip() for line in s.splitlines()]
+                    )
+                    for s in f.read().strip().split("\n\n")
+                    if s.strip() != "-DOCSTART- -X- -X- O"
                 ],
                 word_vocab,
                 tag_vocab,
@@ -109,8 +111,6 @@ class CoNLL2003VocabReader(VocabReader):
                 tok = CoNLL2003Token(*line.strip().split())
                 word_vocab += tok.form
                 tag_vocab += tok.entity_tag
-        for i, v in tag_vocab._i2t.items():
-            print(f"{i}\t{v}")
         return word_vocab, tag_vocab
 
     def read_vocabs(self, file: Path, *args, **kwargs) -> Tuple[Vocab, Vocab]:

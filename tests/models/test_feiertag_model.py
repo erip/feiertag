@@ -13,9 +13,11 @@ class DummyModel(FeiertagModel):
 
     def _cheat_tag(self, sent: Tokens):
         evens = {"0", "2", "4", "6", "8"}
-        # Just look up the right answer. 
+        # Just look up the right answer.
         return [
-            self.tag_vocab["EVEN"] if self.word_vocab.token(tok.item()) in evens else self.tag_vocab["ODD"]
+            self.tag_vocab["EVEN"]
+            if self.word_vocab.token(tok.item()) in evens
+            else self.tag_vocab["ODD"]
             for tok in sent
         ]
 
@@ -29,6 +31,7 @@ def word_vocab():
     for i in range(11):
         word_vocab_ += str(i)
     return word_vocab_
+
 
 @pytest.fixture
 def tag_vocab():
@@ -44,5 +47,3 @@ def test_tagging(word_vocab, tag_vocab):
     tagged = model.tag(input)
     expected_output = [[("0", "EVEN"), ("0", "EVEN"), ("1", "ODD")]]
     assert tagged == expected_output
-
-

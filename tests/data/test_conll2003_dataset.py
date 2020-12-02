@@ -5,6 +5,7 @@ from feiertag.data.conll2003_dataset import (
     CoNLL2003Example,
     CoNLL2003Dataset,
     CoNLL2003NERDataset,
+    CoNLL2003VocabReader,
 )
 from feiertag.data.vocab import Vocab
 
@@ -57,6 +58,62 @@ def test_conll2003_token(conll2003_example):
         assert f(tok) == first_token[i]
 
 
+def test_unknown_token_in_example_yields_unk():
+    word_vocab = Vocab()
+    tag_vocab = Vocab()
+    form = "Pierre"
+    entity_tag = "B-PER"
+    assert form not in word_vocab
+    tag_vocab += entity_tag
+    examples = [CoNLL2003Example([CoNLL2003Token(form, "", "", entity_tag)])]
+    ds = CoNLL2003Dataset(examples, word_vocab, tag_vocab, lambda t: t.entity_tag)
+    (token_vector, tag_vector) = ds[0]
+    assert word_vocab.unk_index in token_vector
+    assert tag_vocab.unk_index not in tag_vector
+
+
+def test_unknown_token_and_tag_in_example_yields_unk():
+    word_vocab = Vocab()
+    tag_vocab = Vocab()
+    form = "Pierre"
+    entity_tag = "B-PER"
+    assert form not in word_vocab
+    assert entity_tag not in tag_vocab
+    examples = [CoNLL2003Example([CoNLL2003Token(form, "", "", entity_tag)])]
+    ds = CoNLL2003Dataset(examples, word_vocab, tag_vocab, lambda t: t.entity_tag)
+    (token_vector, tag_vector) = ds[0]
+    assert word_vocab.unk_index in token_vector
+    assert tag_vocab.unk_index in tag_vector
+
+
+def test_unknown_token_in_example_yields_unk_udposdataset():
+    word_vocab = Vocab()
+    tag_vocab = Vocab()
+    form = "Pierre"
+    entity_tag = "B-PER"
+    assert form not in word_vocab
+    tag_vocab += entity_tag
+    examples = [CoNLL2003Example([CoNLL2003Token(form, "", "", entity_tag)])]
+    ds = CoNLL2003NERDataset(examples, word_vocab, tag_vocab)
+    (token_vector, tag_vector) = ds[0]
+    assert word_vocab.unk_index in token_vector
+    assert tag_vocab.unk_index not in tag_vector
+
+
+def test_unknown_token_and_tag_in_example_yields_unk_udposdataset():
+    word_vocab = Vocab()
+    tag_vocab = Vocab()
+    form = "Pierre"
+    entity_tag = "B-PER"
+    assert form not in word_vocab
+    assert entity_tag not in tag_vocab
+    examples = [CoNLL2003Example([CoNLL2003Token(form, "", "", entity_tag)])]
+    ds = CoNLL2003NERDataset(examples, word_vocab, tag_vocab)
+    (token_vector, tag_vector) = ds[0]
+    assert word_vocab.unk_index in token_vector
+    assert tag_vocab.unk_index in tag_vector
+
+
 @given(st.lists(st.from_type(CoNLL2003Example), max_size=50))
 def test_uddataset_len_is_len_examples(examples):
     word_vocab = Vocab()
@@ -79,3 +136,23 @@ def test_conll2003dataset_from_file(tmp_path, example_dataset, cls, func):
         ds = cls.from_file(file, word_vocab, tag_vocab, encoding="utf-8")
 
     assert len(ds) == 2
+
+
+def test_conll2003_vocab_reader(tmp_path, example_dataset):
+    file = tmp_path / "tmp.txt"
+
+    with open(file, "w", encoding="utf-8") as f:
+        f.write(example_dataset)
+
+    word_vocab, tag_vocab = CoNLL2003VocabReader().read_vocabs(file, encoding="utf-8")
+
+    words = []
+    entity_tags = []
+    for line in example_dataset.splitlines():
+        if line.strip() and line.strip() != "-DOCSTART- -X- -X- O":
+            parts = line.split()
+            words.append(parts[0])
+            entity_tags.append(parts[3])
+
+    assert all(word in word_vocab for word in words)
+    assert all(tag in tag_vocab for tag in entity_tags)

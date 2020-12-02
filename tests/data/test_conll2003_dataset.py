@@ -54,7 +54,14 @@ def test_conll2003_token(conll2003_example):
     tokens = conll2003_example.splitlines()
     first_token = tokens[0].split()
     tok = CoNLL2003Token(*first_token)
-    for i, f in enumerate((lambda t: t.form, lambda t: t.pos, lambda t: t.phrase_tag, lambda t: t.entity_tag)):
+    for i, f in enumerate(
+        (
+            lambda t: t.form,
+            lambda t: t.pos,
+            lambda t: t.phrase_tag,
+            lambda t: t.entity_tag,
+        )
+    ):
         assert f(tok) == first_token[i]
 
 
@@ -122,7 +129,9 @@ def test_uddataset_len_is_len_examples(examples):
     assert len(ds) == len(ds)
 
 
-@pytest.mark.parametrize("cls,func", [(CoNLL2003Dataset, lambda _: ""), (CoNLL2003NERDataset, None)])
+@pytest.mark.parametrize(
+    "cls,func", [(CoNLL2003Dataset, lambda _: ""), (CoNLL2003NERDataset, None)]
+)
 def test_conll2003dataset_from_file(tmp_path, example_dataset, cls, func):
     file = tmp_path / "tmp.txt"
     word_vocab, tag_vocab = Vocab(), Vocab()

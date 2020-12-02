@@ -40,13 +40,15 @@ class FeiertagModel(pl.LightningModule):
         tag_names = [
             [
                 self.tag_vocab.token(idx.item())
-                for i, idx in
-                enumerate(pred)
-            # Chop off BOS and EOS bookends
-            ][1:-1] for pred in preds
+                for i, idx in enumerate(pred)
+                # Chop off BOS and EOS bookends
+            ][1:-1]
+            for pred in preds
         ]
 
-        assert len(tag_names) == len(tokens) and all(len(tag) == len(tok) for tag, tok in zip(tag_names, tokens))
+        assert len(tag_names) == len(tokens) and all(
+            len(tag) == len(tok) for tag, tok in zip(tag_names, tokens)
+        )
 
         return [
             [(word, tag) for word, tag in zip(words, tags)]

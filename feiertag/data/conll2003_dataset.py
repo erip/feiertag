@@ -69,8 +69,10 @@ class CoNLL2003Dataset(Dataset):
             return cls(
                 [
                     CoNLL2003Example.from_lines(
-                        [line.strip() for line in s.splitlines()]) for s in f.read().strip().split("\n\n") if
-                    s.strip() != "-DOCSTART- -X- -X- O"
+                        [line.strip() for line in s.splitlines()]
+                    )
+                    for s in f.read().strip().split("\n\n")
+                    if s.strip() != "-DOCSTART- -X- -X- O"
                 ],
                 word_vocab,
                 tag_vocab,

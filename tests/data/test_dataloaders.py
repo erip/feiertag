@@ -31,7 +31,7 @@ def test_sample_dataloader(tag_pad_index, word_pad_index):
 
     data = [
         (torch.LongTensor([1, 1, 1]), torch.LongTensor([2, 2, 2])),
-        (torch.LongTensor([1, 1]), torch.LongTensor([2, 2]))
+        (torch.LongTensor([1, 1]), torch.LongTensor([2, 2])),
     ]
 
     num_examples = len(data)
@@ -45,5 +45,5 @@ def test_sample_dataloader(tag_pad_index, word_pad_index):
     (word_idx, tag_idx) = next(iter(loader))
 
     # Shorter example gets padded with the appropriate pad index
-    assert word_idx[max_size-1, num_examples-1] == word_pad_index
-    assert tag_idx[max_size-1, num_examples-1] == tag_pad_index
+    assert word_idx[max_size - 1, num_examples - 1] == word_pad_index
+    assert tag_idx[max_size - 1, num_examples - 1] == tag_pad_index

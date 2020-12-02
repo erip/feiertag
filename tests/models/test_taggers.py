@@ -20,6 +20,7 @@ def word_vocab():
         vocab += str(i)
     return vocab
 
+
 @pytest.fixture
 def tag_vocab():
     vocab = Vocab()
@@ -62,12 +63,20 @@ def valid_loader(word_vocab, tag_vocab):
     return DataLoader(tensor, num_workers=4)
 
 
-@pytest.mark.parametrize("model_cls,kwargs", [
-    (BiLSTMTagger, {"embedding": nn.Embedding(10, 5), "hidden_dim": 16, "num_layers": 2}),
-    (BiLSTM_CRF_Tagger, {"embedding": nn.Embedding(10, 5), "hidden_dim": 16, "num_layers": 2})
-])
-def test_model(model_cls, word_vocab, tag_vocab,train_loader, valid_loader, kwargs):
+@pytest.mark.parametrize(
+    "model_cls,kwargs",
+    [
+        (
+            BiLSTMTagger,
+            {"embedding": nn.Embedding(10, 5), "hidden_dim": 16, "num_layers": 2},
+        ),
+        (
+            BiLSTM_CRF_Tagger,
+            {"embedding": nn.Embedding(10, 5), "hidden_dim": 16, "num_layers": 2},
+        ),
+    ],
+)
+def test_model(model_cls, word_vocab, tag_vocab, train_loader, valid_loader, kwargs):
     model = model_cls(word_vocab=word_vocab, tag_vocab=tag_vocab, **kwargs)
     trainer = pl.Trainer(logger=False, checkpoint_callback=False, max_epochs=1)
     trainer.fit(model, train_loader, valid_loader)
-

@@ -2,7 +2,9 @@ import os
 import warnings
 
 # PyTorch-Lightning warns amount mismatches in num classes at the batch-level, so we suppress these.
-warnings.filterwarnings("ignore", module="pytorch_lightning.utilities.distributed", category=RuntimeWarning)
+warnings.filterwarnings(
+    "ignore", module="pytorch_lightning.utilities.distributed", category=RuntimeWarning
+)
 
 import hydra
 
@@ -39,14 +41,16 @@ def setup_eval_data(
 @hydra.main(config_path=os.path.join("..", "config"), config_name="eval")
 def main(cfg: DictConfig):
     print(OmegaConf.to_yaml(cfg))
-    model = hydra.utils.instantiate(cfg.model.load, hydra.utils.to_absolute_path(cfg.path))
+    model = hydra.utils.instantiate(
+        cfg.model.load, hydra.utils.to_absolute_path(cfg.path)
+    )
     print(model)
 
     test_loader = setup_eval_data(
         model.word_vocab,
         model.tag_vocab,
         cfg["data_format"]["dataset"],
-        cfg['data']['test']
+        cfg["data"]["test"],
     )
 
     trainer = pl.Trainer() if "trainer" not in cfg else pl.Trainer(**cfg["trainer"])

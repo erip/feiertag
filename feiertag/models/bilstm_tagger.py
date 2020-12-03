@@ -96,11 +96,9 @@ class BiLSTMTagger(FeiertagModel):
 
         pred_tags = self(sentences).t()
 
-        f1 = FM.f1(pred_tags, tags, num_classes=self.tagset_size),
+        f1 = (FM.f1(pred_tags, tags, num_classes=self.tagset_size),)
 
-        metrics = {
-            "f1": f1
-        }
+        metrics = {"f1": f1}
         self.log_dict(metrics)
 
     def configure_optimizers(self):

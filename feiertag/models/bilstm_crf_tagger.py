@@ -3,12 +3,12 @@ import torch.nn as nn
 from feiertag.data.vocab import Vocab
 from feiertag.models.feiertag_model import FeiertagModel
 
-
 import torch
 
 from torchcrf import CRF
 import torch.optim as optim
 from pytorch_lightning.metrics import F1
+from pytorch_lightning.metrics import functional as FM
 
 
 class BiLSTM_CRF_Tagger(FeiertagModel):
@@ -95,6 +95,21 @@ class BiLSTM_CRF_Tagger(FeiertagModel):
         res = torch.LongTensor(self.crf.decode(preds))
 
         return res
+
+    def test_step(self, batch, batch_idx, **kwargs):
+        sentences, tags = batch
+
+        embedded = self.embedding(sentences)
+        outputs, _ = self.lstm(embedded)
+
+        pred_tags = self(sentences).t()
+
+        f1 = FM.f1(pred_tags, tags, num_classes=self.tagset_size),
+
+        metrics = {
+            "f1": f1
+        }
+        self.log_dict(metrics)
 
     def configure_optimizers(self):
         return optim.Adam(self.parameters())

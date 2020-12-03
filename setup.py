@@ -28,7 +28,8 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'feiertag-train=feiertag.cli.train:main'
+            'feiertag-train=feiertag.cli.train:main',
+            'feiertag-eval=feiertag.cli.eval:main'
         ],
     }
 )

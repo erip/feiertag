@@ -1,0 +1,8 @@
+random_seed: 42
+
+path: ???
+
+defaults:
+  - model: bilstm
+  - data: eval
+  - data_format: conllu

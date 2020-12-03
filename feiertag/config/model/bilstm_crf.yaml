@@ -1,5 +1,7 @@
 # @package _group_
 
 _target_: feiertag.models.bilstm_crf_tagger.BiLSTM_CRF_Tagger
+load:
+  _target_: feiertag.models.bilstm_crf_tagger.BiLSTM_CRF_Tagger.load_from_checkpoint
 hidden_dim: 128
 num_layers: 2

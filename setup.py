@@ -20,6 +20,7 @@ setup(
         "torch",
         "pytorch_lightning",
         "pytorch-crf",
+        "hydra-configs-torch @ git+https://github.com/pytorch/hydra-torch/#subdirectory=hydra-configs-torch",
     ],
     test_requires=[
         "pytest",
